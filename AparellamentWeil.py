@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Nov 16 12:17:02 2021
-
-@author: ana_p
-"""
 
 from suma import suma, pendiente, mSuma, punts, inv
 
@@ -31,24 +26,25 @@ def num(N):
     return [e,len(e)]
 
 
+
+
 #Funció que retorna la funció h_{P,Q}, avaluada a ub punt S, en funció de si lambda és infinit (False) o no ho és (True).
 def h(P,Q,S,p):
     [x,y]=S
     [xP,yP]=P
     [xQ,yQ]=Q
     lam=lamda(P,Q,p)
-    if P==[None,None]:
-            [xP,yP]=[0,0]
-    if Q==[None,None]:
-            [xQ,yQ]=[0,0]
     [l,v]=pendiente(P, Q, p)
-    if lam == True:
-        if (x+xP+xQ-l**2)%p==0:
-            hPQ=0
-        else:
-            hPQ=(y-yP-l*(x-xP))*inv(x+xP+xQ-l**2,p)
+    if P==[None,None]:
+        hPQ=1
     else:
-        hPQ=(x-xP)
+        if lam == True:
+            if Q!=[None,None]:
+                hPQ=(y-yP-l*(x-xP))*inv(x+xP+xQ-l**2,p)
+            else:
+                hPQ=x-xP
+        else:
+            hPQ=(x-xP)
     return hPQ
 
 
@@ -84,8 +80,23 @@ def Weil(P,Q,S,p,N):
         ePQ=(fpQS*inv(fpS, p))*inv(fqPS*inv(fqS, p),p)
     return ePQ%p
 
+def orden(p,N):
+    pt2=[]
+    pt=punts(p)
+    for i in range(p):
+        if mSuma(pt[i],p,N)==[None,None]:
+            pt2.append(pt[i])
+    return pt2
+    
 
-print(Weil([0,1],[2,8],[5,7],11,3))
-print((Weil([0,1],[2,8],[5,7],11,3)*Weil([0,1],[2,8],[5,7],11,3))%11)
-print(Weil(suma([0,1],[0,1],11), [2,8], [5,7], 11, 3))
+
+
+a=Weil([0,1],[0,10],[5,7],11,6)
+b=Weil(suma([0,1],[0,1],11),[0,10],[5,7],11,6)
+print(a)
+print((a*a)%11)
+print(b)
+
+
+
 
